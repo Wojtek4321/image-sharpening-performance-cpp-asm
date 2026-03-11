@@ -8,11 +8,12 @@ Low-level implementation and performance analysis of an image sharpening filter.
 * **Environment:** MSVC / Visual Studio 2022.
 * **Focus:** Hardware-level data processing and memory alignment.
 * 
-**Algorithm Detail**
-The sharpening process is based on the following logic:
-Box Blur (3x3): Calculating a blurred version of the source image.
-Sharpening Formula: dst = src + amount*(src - blur).
-Intensity Adjustment: Adjustable via GUI slider (0-200%), mapped to a factor of 0.0 - 2.0
+# Algorithm Detail
+[cite_start]The sharpening process follows a high-pass filter logic[cite: 10, 11, 12]:
+1. [cite_start]**Box Blur (3x3):** Calculating a blurred version of the source image to identify low-frequency components[cite: 11].
+2. **Sharpening Formula:** The final pixel value is determined by the formula:
+   [cite_start]$$dst = src + amount \cdot (src - blur)$$ [cite: 12]
+3. [cite_start]**Intensity Adjustment:** Adjustable via GUI slider (0-200%), mapped to a factor of $0.0 - 2.0$[cite: 13, 43].
 
 ## Benchmarks
 **Test Data:** 1200x678 (105 KB) | **Intensity:** 200%
@@ -20,7 +21,7 @@ Intensity Adjustment: Adjustable via GUI slider (0-200%), mapped to a factor of 
 | Threads | ASM (ms) | C++ (ms) | Speedup |
 | :--- | :--- | :--- | :--- |
 | 1 | 12.348 | 15.030 | 1.22x |
-| 2 | **10.366** | **12.122** | 1.17x |
+| 2 | 10.366 | 12.122 | 1.17x |
 | 4 | 10.840 | 12.668 | 1.17x |
 | 8 | 12.688 | 15.164 | 1.19x |
 | 16 | 20.216 | 25.950 | 1.28x |
@@ -29,7 +30,6 @@ Intensity Adjustment: Adjustable via GUI slider (0-200%), mapped to a factor of 
 
 
 ### Performance Analysis
-* **Optimal Concurrency:** Peak performance was achieved with **2 threads**. 
 * **Threading Overhead:** Increasing threads beyond the physical core limit (or for small data sets) resulted in performance degradation due to context switching and synchronization costs.
 * **ASM vs C++:** The x64 Assembly implementation consistently outperformed C++ by utilizing efficient register management and vector instructions, showing up to **64%** gain under high load.
 
