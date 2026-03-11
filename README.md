@@ -7,7 +7,7 @@ Low-level implementation and performance analysis of an image sharpening filter.
 * **Parallelism:** Multi-threaded execution for workload distribution.
 * **Environment:** MSVC / Visual Studio 2022.
 * **Focus:** Hardware-level data processing and memory alignment.
-* 
+
 # Algorithm Detail
 The sharpening process follows a high-pass filter logic.
 1. **Box Blur (3x3):** Calculating a blurred version of the source image to identify low-frequency components.
