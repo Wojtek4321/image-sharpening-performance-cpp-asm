@@ -9,11 +9,11 @@ Low-level implementation and performance analysis of an image sharpening filter.
 * **Focus:** Hardware-level data processing and memory alignment.
 * 
 # Algorithm Detail
-[cite_start]The sharpening process follows a high-pass filter logic[cite: 10, 11, 12]:
-1. [cite_start]**Box Blur (3x3):** Calculating a blurred version of the source image to identify low-frequency components[cite: 11].
+The sharpening process follows a high-pass filter logic.
+1. **Box Blur (3x3):** Calculating a blurred version of the source image to identify low-frequency components.
 2. **Sharpening Formula:** The final pixel value is determined by the formula:
-   [cite_start]$$dst = src + amount \cdot (src - blur)$$ [cite: 12]
-3. [cite_start]**Intensity Adjustment:** Adjustable via GUI slider (0-200%), mapped to a factor of $0.0 - 2.0$[cite: 13, 43].
+   dst = src + amount * (src - blur).
+3. **Intensity Adjustment:** Adjustable via GUI slider (0-200%), mapped to a factor of 0.0 - 2.0.
 
 ## Benchmarks
 **Test Data:** 1200x678 (105 KB) | **Intensity:** 200%
@@ -27,11 +27,6 @@ Low-level implementation and performance analysis of an image sharpening filter.
 | 16 | 20.216 | 25.950 | 1.28x |
 | 32 | 25.574 | 36.432 | 1.42x |
 | 64 | 35.978 | 58.970 | 1.64x |
-
-
-### Performance Analysis
-* **Threading Overhead:** Increasing threads beyond the physical core limit (or for small data sets) resulted in performance degradation due to context switching and synchronization costs.
-* **ASM vs C++:** The x64 Assembly implementation consistently outperformed C++ by utilizing efficient register management and vector instructions, showing up to **64%** gain under high load.
 
 ## Setup & Execution
 1. Clone the repository.
